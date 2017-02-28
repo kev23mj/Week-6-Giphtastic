@@ -22,12 +22,12 @@
     <!-- your code will Get Dumped Dere -->
     <div id="cars-view"></div>
 
-    <form id="movie-form">
-      <label for="movie-input">Search for a Car Bro</label>
-      <input type="text" id="movie-input"><br>
+    <form id="car-form">
+      <label for="car-input">Search for a Car Bro</label>
+      <input type="text" id="car-input"><br>
 
       <!-- Button triggers new movie to be added -->
-      <input id="add-movie" type="submit" value="Add a Movie Bro">
+      <input id="add-car" type="submit" value="Add a Car Bro">
     </form>
     <div id="CarInfo"></div>
 
@@ -45,20 +45,25 @@
         console.log(this);
         var name = $(this).attr('data-name');
             name = name.split(' ').join('+');
-         http to https
-        var queryURL = "http://api.giphy.com/v1/gifs/search?q="+name+"&api_key=dc6zaTOxFJmzC" ;
+         
+        var queryURL = "http://api.giphy.com/v1/gifs/search?q="+ name + "&api_key=dc6zaTOxFJmzC";
+
         console.log(queryURL);
         //var queryURL = 'https://api.giphy.com/v1/gifs/search?q=undefined&api_key=dc6zaTOxFJmzC'
         $.ajax({
           url: queryURL
           , method: 'GET'
         }).done(function(response){
-          console.log('here');
-          console.log (response.data[0].images.fixed_height.url);
-          var image = response.data[0].images.fixed_height.url;
-          var car = $("<img>").attr("src", image);
-          $("#CarInfo").html(car);
-          responseTest = response;
+          console.log('this is response: ');
+          console.log(response);
+          //console.log (response.data[0].images.fixed_height.url);
+
+          for (var i = 0; i < 10; i++){
+            var image = response.data[i].images.fixed_height.url;
+            var car = $("<img>").attr("src", image);
+            $("#CarInfo").append(car);
+          } 
+
         });
       }
 
@@ -67,7 +72,7 @@
 
         
         // (this is necessary otherwise you will have repeat buttons)
-        $("#cars-view").empty();
+        $("#cars-view").html('');
 
         // Looping through the array of cars
         for (var i = 0; i < cars.length; i++) {
@@ -76,7 +81,7 @@
           // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
           var a = $("<button>");
           // Adding a class of movie to our button
-          a.addClass("movie");
+          a.addClass("car");
           // Adding a data-attribute
           a.attr("data-name", cars[i]);
           // Providing the initial button text
@@ -87,22 +92,23 @@
       }
 
       // This function handles events where one button is clicked
-      $("#add-movie").on("click", function(event) {
+      $("#add-car").on("click", function(event) {
         event.preventDefault();
 
         // This line grabs the input from the textbox
-        var = $("#movie-input").val().trim();
+        var car = $("#car-input").val().trim();
 
         // The movie from the textbox is then added to our array
-        cars.push(movie);
+        cars.push(car);
 
-        // Calling renderButtons which handles the processing of our movie array
         renderButtons();
+
+        // Calling renderButm
 
       });
 
       // Generic function for displaying the movieInfo
-      $(document).on("click", ".movie", displayCarInfo);
+      $(document).on("click", ".car", displayCarInfo);
       renderButtons();
       //$(".movie").click(displayMovieInfo);
 
